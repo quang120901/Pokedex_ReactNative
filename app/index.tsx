@@ -1,130 +1,213 @@
-import { Link } from "expo-router";
-import { useEffect, useState } from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { RefreshControl, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
+import ErrorState from "./components/ErrorState";
+import LoadingSpinner from "./components/LoadingSpinner";
+import PokemonCard from "./components/PokemonCard";
+import pokemonService from "./services/pokemonService";
+import theme from "./styles/theme";
+import PokemonTypes from "./types/pokemon";
 
-
-interface Pokemon {
-  name: string;
-  image: string;
-  imageBack: string;
-  types: PokemonType[];
-}
-
-interface PokemonType {
-  type: {
-    name: string;
-    url: string;
-  }
-}
-
-const colorsByType: Record<string, string> = {
-  normal: '#A8A77A',
-  fire: '#EE8130',
-  water: '#6390F0',
-  electric: '#F7D02C',
-  grass: '#7AC74C',
-  ice: '#96D9D6',
-  fighting: '#C22E28',
-  poison: '#A33EA1',
-  ground: '#E2BF65',
-  flying: '#A98FF3',
-  psychic: '#F95587',
-  bug: '#A6B91A',
-  rock: '#B6A136',
-  ghost: '#735797',
-  dragon: '#6F35FC',
-  dark: '#705746',
-  steel: '#B7B7CE',
-  fairy: '#D685AD',
-}
+const { COLORS, globalStyles, SPACING, TYPOGRAPHY } = theme;
+const { PokemonCard: PokemonCardType } = PokemonTypes;
 
 export default function Index() {
+  const [pokemons, setPokemons] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+  const [offset, setOffset] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
 
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-
-  console.log(JSON.stringify(pokemons[0], null, 2));
+  const LIMIT = 12;
 
   useEffect(() => {
     fetchPokemons();
-  }, [])
+  }, []);
 
   async function fetchPokemons() {
     try {
-      const response = await fetch(
-        "https://pokeapi.co/api/v2/pokemon/?limit=10"
-      );
-      const data = await response.json();
-
-      const detailedPokemons = await Promise.all(
-        data.results.map(async (pokemon: any) => {
-          const res = await fetch(pokemon.url);
-          const details = await res.json();
-          return {
-            name: pokemon.name,
-            image: details.sprites.front_default,
-            imageBack: details.sprites.back_default,
-            types: details.types,
-          };
-        })
-      );
-
-      setPokemons(detailedPokemons);
+      setLoading(true);
+      setError(null);
+      const data = await pokemonService.getPokemons(LIMIT, 0);
+      setPokemons(data);
+      setOffset(LIMIT);
+      setHasMore(data.length === LIMIT);
     } catch (e) {
-      console.log(e)
+      const errorMessage = e instanceof Error ? e.message : "Failed to fetch pokemons";
+      setError(errorMessage);
+      console.error("Error fetching pokemons:", e);
+    } finally {
+      setLoading(false);
     }
+  }
+
+  const loadMorePokemons = useCallback(async () => {
+    if (loadingMore || !hasMore) return;
+
+    try {
+      setLoadingMore(true);
+      const data = await pokemonService.getPokemons(LIMIT, offset);
+
+      if (data.length === 0) {
+        setHasMore(false);
+      } else {
+        setPokemons(prev => [...prev, ...data]);
+        setOffset(prev => prev + LIMIT);
+        setHasMore(data.length === LIMIT);
+      }
+    } catch (e) {
+      console.error("Error loading more pokemons:", e);
+      // Silently fail for load more - user can scroll again to retry
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [offset, hasMore, loadingMore]);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      setOffset(0);
+      setHasMore(true);
+      const data = await pokemonService.getPokemons(LIMIT, 0);
+      setPokemons(data);
+      setOffset(LIMIT);
+      setHasMore(data.length === LIMIT);
+    } catch (e) {
+      const errorMessage = e instanceof Error ? e.message : "Failed to refresh pokemons";
+      setError(errorMessage);
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
+
+  const handleScroll = useCallback((event: any) => {
+    const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+    const isNearBottom = layoutMeasurement.height + contentOffset.y >= contentSize.height - 200;
+
+    if (isNearBottom && !loadingMore && hasMore) {
+      loadMorePokemons();
+    }
+  }, [loadingMore, hasMore, loadMorePokemons]);
+
+  if (loading) {
+    return <LoadingSpinner message="Loading Pokemons..." />;
+  }
+
+  if (error) {
+    return <ErrorState message={error} onRetry={fetchPokemons} />;
+  }
+
+  if (pokemons.length === 0) {
+    return (
+      <View style={globalStyles.emptyContainer}>
+        <Text style={styles.emptyText}>No Pokemons found</Text>
+      </View>
+    );
   }
 
   return (
     <ScrollView
-      contentContainerStyle={{
-        gap: 16,
-        padding: 16,
-
-      }}
+      contentContainerStyle={styles.scrollContainer}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          colors={[COLORS.primary]}
+          tintColor={COLORS.primary}
+        />
+      }
+      onScroll={handleScroll}
+      scrollEventThrottle={16}
     >
-      {pokemons.map((pokemon) => (
-        <Link
-          key={pokemon.name}
-          href={{ pathname: "/details", params: { name: pokemon.name } }}
-          style={{
-            // @ts-ignore
-            backgroundColor: colorsByType[pokemon.types[0].type.name] + 50,
-            padding: 20,
-            borderRadius: 20,
-          }}
-        >
-          <View>
-            <Text style={styles.name}>{pokemon.name}</Text>
-            <Text style={styles.type}>{pokemon.types[0].type.name}</Text>
-            <View style={{
-              flexDirection: "row",
-            }}>
-              <Image source={{ uri: pokemon.image }}
-                style={{ width: 150, height: 150 }}
-              />
-              <Image source={{ uri: pokemon.imageBack }}
-                style={{ width: 150, height: 150 }}
-              />
-            </View>
-          </View>
-        </Link>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Pokédex</Text>
+        <Text style={styles.headerSubtitle}>Discover {pokemons.length}+ Pokemons</Text>
+      </View>
 
-      ))}
+      <View style={styles.grid}>
+        {pokemons.reduce((rows: any[][], pokemon, index) => {
+          const rowIndex = Math.floor(index / 2);
+          if (!rows[rowIndex]) rows[rowIndex] = [];
+          rows[rowIndex].push(
+            <View key={pokemon.id} style={styles.cardWrapper}>
+              <PokemonCard pokemon={pokemon} />
+            </View>
+          );
+          return rows;
+        }, []).map((row: any[], rowIndex: number) => (
+          <View key={`row-${rowIndex}`} style={styles.row}>
+            {row}
+          </View>
+        ))}
+      </View>
+
+      {loadingMore && (
+        <View style={styles.loadingMoreContainer}>
+          <LoadingSpinner message="Loading more Pokemons..." />
+        </View>
+      )}
+
+      {!hasMore && pokemons.length > 0 && (
+        <View style={styles.endMessage}>
+          <Text style={styles.endText}>You've reached the end!</Text>
+        </View>
+      )}
     </ScrollView>
   );
 }
 
-
 const styles = StyleSheet.create({
-  name: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    textAlign: 'center',
+  scrollContainer: {
+    gap: SPACING.md,
+    padding: SPACING.md,
+    paddingBottom: SPACING.xl,
+    paddingTop: SPACING.lg + (StatusBar.currentHeight || 0),
   },
-  type: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'gray',
-    textAlign: 'center',
+  header: {
+    backgroundColor: COLORS.primary,
+    padding: SPACING.lg,
+    borderRadius: SPACING.md,
+    alignItems: 'center',
+    gap: SPACING.xs,
+  },
+  headerTitle: {
+    fontSize: TYPOGRAPHY.header.fontSize,
+    fontWeight: TYPOGRAPHY.header.fontWeight,
+    color: COLORS.background,
+  },
+  headerSubtitle: {
+    fontSize: TYPOGRAPHY.caption.fontSize,
+    color: COLORS.background,
+    opacity: 0.9,
+  },
+  grid: {
+    gap: SPACING.md,
+  },
+  row: {
+    flexDirection: 'row',
+    gap: SPACING.md,
+    justifyContent: 'space-between',
+  },
+  cardWrapper: {
+    flex: 1,
+  },
+  emptyText: {
+    fontSize: TYPOGRAPHY.subtitle.fontSize,
+    fontWeight: TYPOGRAPHY.subtitle.fontWeight,
+    color: COLORS.textSecondary,
+  },
+  loadingMoreContainer: {
+    padding: SPACING.md,
+    alignItems: 'center',
+  },
+  endMessage: {
+    padding: SPACING.md,
+    alignItems: 'center',
+  },
+  endText: {
+    fontSize: TYPOGRAPHY.caption.fontSize,
+    color: COLORS.textSecondary,
+    fontStyle: 'italic',
   },
 });
