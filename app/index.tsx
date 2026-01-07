@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { RefreshControl, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
+import { RefreshControl, ScrollView, StatusBar, Text, View } from "react-native";
 import ErrorState from "./components/ErrorState";
 import LoadingSpinner from "./components/LoadingSpinner";
 import PokemonCard from "./components/PokemonCard";
@@ -7,7 +7,7 @@ import pokemonService from "./services/pokemonService";
 import theme from "./styles/theme";
 import PokemonTypes from "./types/pokemon";
 
-const { COLORS, globalStyles, SPACING, TYPOGRAPHY } = theme;
+const { COLORS, globalStyles, indexStyles, SPACING, TYPOGRAPHY } = theme;
 const { PokemonCard: PokemonCardType } = PokemonTypes;
 
 export default function Index() {
@@ -101,14 +101,14 @@ export default function Index() {
   if (pokemons.length === 0) {
     return (
       <View style={globalStyles.emptyContainer}>
-        <Text style={styles.emptyText}>No Pokemons found</Text>
+        <Text style={indexStyles.emptyText}>No Pokemons found</Text>
       </View>
     );
   }
 
   return (
     <ScrollView
-      contentContainerStyle={styles.scrollContainer}
+      contentContainerStyle={[indexStyles.scrollContainer, { paddingTop: SPACING.lg + (StatusBar.currentHeight || 0) }]}
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
@@ -120,94 +120,39 @@ export default function Index() {
       onScroll={handleScroll}
       scrollEventThrottle={16}
     >
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Pokédex</Text>
-        <Text style={styles.headerSubtitle}>Discover {pokemons.length}+ Pokemons</Text>
+      <View style={indexStyles.header}>
+        <Text style={indexStyles.headerTitle}>Pokédex</Text>
+        <Text style={indexStyles.headerSubtitle}>Discover {pokemons.length}+ Pokemons</Text>
       </View>
 
-      <View style={styles.grid}>
+      <View style={indexStyles.grid}>
         {pokemons.reduce((rows: any[][], pokemon, index) => {
           const rowIndex = Math.floor(index / 2);
           if (!rows[rowIndex]) rows[rowIndex] = [];
           rows[rowIndex].push(
-            <View key={pokemon.id} style={styles.cardWrapper}>
+            <View key={pokemon.id} style={indexStyles.cardWrapper}>
               <PokemonCard pokemon={pokemon} />
             </View>
           );
           return rows;
         }, []).map((row: any[], rowIndex: number) => (
-          <View key={`row-${rowIndex}`} style={styles.row}>
+          <View key={`row-${rowIndex}`} style={indexStyles.row}>
             {row}
           </View>
         ))}
       </View>
 
       {loadingMore && (
-        <View style={styles.loadingMoreContainer}>
+        <View style={indexStyles.loadingMoreContainer}>
           <LoadingSpinner message="Loading more Pokemons..." />
         </View>
       )}
 
       {!hasMore && pokemons.length > 0 && (
-        <View style={styles.endMessage}>
-          <Text style={styles.endText}>You've reached the end!</Text>
+        <View style={indexStyles.endMessage}>
+          <Text style={indexStyles.endText}>You've reached the end!</Text>
         </View>
       )}
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  scrollContainer: {
-    gap: SPACING.md,
-    padding: SPACING.md,
-    paddingBottom: SPACING.xl,
-    paddingTop: SPACING.lg + (StatusBar.currentHeight || 0),
-  },
-  header: {
-    backgroundColor: COLORS.primary,
-    padding: SPACING.lg,
-    borderRadius: SPACING.md,
-    alignItems: 'center',
-    gap: SPACING.xs,
-  },
-  headerTitle: {
-    fontSize: TYPOGRAPHY.header.fontSize,
-    fontWeight: TYPOGRAPHY.header.fontWeight,
-    color: COLORS.background,
-  },
-  headerSubtitle: {
-    fontSize: TYPOGRAPHY.caption.fontSize,
-    color: COLORS.background,
-    opacity: 0.9,
-  },
-  grid: {
-    gap: SPACING.md,
-  },
-  row: {
-    flexDirection: 'row',
-    gap: SPACING.md,
-    justifyContent: 'space-between',
-  },
-  cardWrapper: {
-    flex: 1,
-  },
-  emptyText: {
-    fontSize: TYPOGRAPHY.subtitle.fontSize,
-    fontWeight: TYPOGRAPHY.subtitle.fontWeight,
-    color: COLORS.textSecondary,
-  },
-  loadingMoreContainer: {
-    padding: SPACING.md,
-    alignItems: 'center',
-  },
-  endMessage: {
-    padding: SPACING.md,
-    alignItems: 'center',
-  },
-  endText: {
-    fontSize: TYPOGRAPHY.caption.fontSize,
-    color: COLORS.textSecondary,
-    fontStyle: 'italic',
-  },
-});

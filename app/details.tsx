@@ -5,7 +5,6 @@ import {
     Image,
     ScrollView,
     StatusBar,
-    StyleSheet,
     Text,
     TouchableOpacity,
     View
@@ -16,7 +15,7 @@ import pokemonService from "./services/pokemonService";
 import theme from "./styles/theme";
 import PokemonTypes from "./types/pokemon";
 
-const { BORDER_RADIUS, COLORS, SHADOWS, SPACING, TYPOGRAPHY } = theme;
+const { COLORS, detailsStyles, SPACING } = theme;
 const { PokemonDetails } = PokemonTypes;
 
 const { width } = Dimensions.get('window');
@@ -73,65 +72,65 @@ export default function Details() {
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <ScrollView contentContainerStyle={[detailsStyles.scrollContainer, { paddingTop: SPACING.lg + (StatusBar.currentHeight || 0) }]}>
             {/* Header */}
-            <View style={[styles.header, { backgroundColor: cardBackgroundColor }]}>
-                <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-                    <Text style={styles.backButtonText}>← Back</Text>
+            <View style={[detailsStyles.header, { backgroundColor: cardBackgroundColor }]}>
+                <TouchableOpacity onPress={() => router.back()} style={detailsStyles.backButton}>
+                    <Text style={detailsStyles.backButtonText}>← Back</Text>
                 </TouchableOpacity>
-                <Text style={styles.pokemonName}>{pokemon.name}</Text>
-                <Text style={styles.pokemonId}>#{pokemon.id.toString().padStart(3, '0')}</Text>
+                <Text style={detailsStyles.pokemonName}>{pokemon.name}</Text>
+                <Text style={detailsStyles.pokemonId}>#{pokemon.id.toString().padStart(3, '0')}</Text>
             </View>
 
             {/* Main Image */}
-            <TouchableOpacity onPress={toggleImage} style={styles.imageContainer}>
+            <TouchableOpacity onPress={toggleImage} style={detailsStyles.imageContainer}>
                 <Image
                     source={{ uri: showBackImage ? pokemon.sprites.back_default : pokemon.sprites.front_default }}
-                    style={styles.mainImage}
+                    style={[detailsStyles.mainImage, { width: width * 0.6, height: width * 0.6 }]}
                     resizeMode="contain"
                 />
-                <Text style={styles.imageHint}>Tap to flip</Text>
+                <Text style={detailsStyles.imageHint}>Tap to flip</Text>
             </TouchableOpacity>
 
             {/* Types */}
-            <View style={styles.typesContainer}>
+            <View style={detailsStyles.typesContainer}>
                 {pokemon.types.map((type: any, index: number) => (
-                    <View key={index} style={[styles.typeBadge, { backgroundColor: COLORS[type.type.name as keyof typeof COLORS] }]}>
-                        <Text style={styles.typeText}>{type.type.name}</Text>
+                    <View key={index} style={[detailsStyles.typeBadge, { backgroundColor: COLORS[type.type.name as keyof typeof COLORS] }]}>
+                        <Text style={detailsStyles.typeText}>{type.type.name}</Text>
                     </View>
                 ))}
             </View>
 
             {/* Basic Info */}
-            <View style={styles.infoCard}>
-                <Text style={styles.sectionTitle}>Basic Info</Text>
-                <View style={styles.statsGrid}>
-                    <View style={styles.statItem}>
-                        <Text style={styles.statLabel}>Height</Text>
-                        <Text style={styles.statValue}>{(pokemon.height / 10).toFixed(1)} m</Text>
+            <View style={detailsStyles.infoCard}>
+                <Text style={detailsStyles.sectionTitle}>Basic Info</Text>
+                <View style={detailsStyles.statsGrid}>
+                    <View style={detailsStyles.statItem}>
+                        <Text style={detailsStyles.statLabel}>Height</Text>
+                        <Text style={detailsStyles.statValue}>{(pokemon.height / 10).toFixed(1)} m</Text>
                     </View>
-                    <View style={styles.statItem}>
-                        <Text style={styles.statLabel}>Weight</Text>
-                        <Text style={styles.statValue}>{(pokemon.weight / 10).toFixed(1)} kg</Text>
+                    <View style={detailsStyles.statItem}>
+                        <Text style={detailsStyles.statLabel}>Weight</Text>
+                        <Text style={detailsStyles.statValue}>{(pokemon.weight / 10).toFixed(1)} kg</Text>
                     </View>
-                    <View style={styles.statItem}>
-                        <Text style={styles.statLabel}>Base Exp</Text>
-                        <Text style={styles.statValue}>{pokemon.base_experience}</Text>
+                    <View style={detailsStyles.statItem}>
+                        <Text style={detailsStyles.statLabel}>Base Exp</Text>
+                        <Text style={detailsStyles.statValue}>{pokemon.base_experience}</Text>
                     </View>
                 </View>
             </View>
 
             {/* Stats */}
-            <View style={styles.infoCard}>
-                <Text style={styles.sectionTitle}>Stats</Text>
-                <View style={styles.statsList}>
+            <View style={detailsStyles.infoCard}>
+                <Text style={detailsStyles.sectionTitle}>Stats</Text>
+                <View style={detailsStyles.statsList}>
                     {pokemon.stats.map((stat: any, index: number) => (
-                        <View key={index} style={styles.statRow}>
-                            <Text style={styles.statName}>{stat.stat.name}</Text>
-                            <View style={styles.statBarContainer}>
+                        <View key={index} style={detailsStyles.statRow}>
+                            <Text style={detailsStyles.statName}>{stat.stat.name}</Text>
+                            <View style={detailsStyles.statBarContainer}>
                                 <View
                                     style={[
-                                        styles.statBar,
+                                        detailsStyles.statBar,
                                         {
                                             width: `${Math.min(stat.base_stat, 100)}%`,
                                             backgroundColor: backgroundColor
@@ -139,19 +138,19 @@ export default function Details() {
                                     ]}
                                 />
                             </View>
-                            <Text style={styles.statNumber}>{stat.base_stat}</Text>
+                            <Text style={detailsStyles.statNumber}>{stat.base_stat}</Text>
                         </View>
                     ))}
                 </View>
             </View>
 
             {/* Abilities */}
-            <View style={styles.infoCard}>
-                <Text style={styles.sectionTitle}>Abilities</Text>
-                <View style={styles.abilitiesContainer}>
+            <View style={detailsStyles.infoCard}>
+                <Text style={detailsStyles.sectionTitle}>Abilities</Text>
+                <View style={detailsStyles.abilitiesContainer}>
                     {pokemon.abilities.map((ability: any, index: number) => (
-                        <View key={index} style={styles.abilityBadge}>
-                            <Text style={styles.abilityText}>{ability.ability.name}</Text>
+                        <View key={index} style={detailsStyles.abilityBadge}>
+                            <Text style={detailsStyles.abilityText}>{ability.ability.name}</Text>
                         </View>
                     ))}
                 </View>
@@ -159,12 +158,12 @@ export default function Details() {
 
             {/* Moves Preview */}
             {pokemon.moves.length > 0 && (
-                <View style={styles.infoCard}>
-                    <Text style={styles.sectionTitle}>Sample Moves ({pokemon.moves.length} total)</Text>
-                    <View style={styles.movesContainer}>
+                <View style={detailsStyles.infoCard}>
+                    <Text style={detailsStyles.sectionTitle}>Sample Moves ({pokemon.moves.length} total)</Text>
+                    <View style={detailsStyles.movesContainer}>
                         {pokemon.moves.slice(0, 6).map((move: any, index: number) => (
-                            <View key={index} style={styles.moveBadge}>
-                                <Text style={styles.moveText}>{move.move.name}</Text>
+                            <View key={index} style={detailsStyles.moveBadge}>
+                                <Text style={detailsStyles.moveText}>{move.move.name}</Text>
                             </View>
                         ))}
                     </View>
@@ -172,31 +171,31 @@ export default function Details() {
             )}
 
             {/* Sprites Gallery */}
-            <View style={styles.infoCard}>
-                <Text style={styles.sectionTitle}>Sprites Gallery</Text>
-                <View style={styles.spritesGrid}>
+            <View style={detailsStyles.infoCard}>
+                <Text style={detailsStyles.sectionTitle}>Sprites Gallery</Text>
+                <View style={detailsStyles.spritesGrid}>
                     {pokemon.sprites.front_default && (
-                        <View style={styles.spriteWrapper}>
-                            <Image source={{ uri: pokemon.sprites.front_default }} style={styles.sprite} />
-                            <Text style={styles.spriteLabel}>Front</Text>
+                        <View style={detailsStyles.spriteWrapper}>
+                            <Image source={{ uri: pokemon.sprites.front_default }} style={detailsStyles.sprite} />
+                            <Text style={detailsStyles.spriteLabel}>Front</Text>
                         </View>
                     )}
                     {pokemon.sprites.back_default && (
-                        <View style={styles.spriteWrapper}>
-                            <Image source={{ uri: pokemon.sprites.back_default }} style={styles.sprite} />
-                            <Text style={styles.spriteLabel}>Back</Text>
+                        <View style={detailsStyles.spriteWrapper}>
+                            <Image source={{ uri: pokemon.sprites.back_default }} style={detailsStyles.sprite} />
+                            <Text style={detailsStyles.spriteLabel}>Back</Text>
                         </View>
                     )}
                     {pokemon.sprites.front_shiny && (
-                        <View style={styles.spriteWrapper}>
-                            <Image source={{ uri: pokemon.sprites.front_shiny }} style={styles.sprite} />
-                            <Text style={styles.spriteLabel}>Shiny</Text>
+                        <View style={detailsStyles.spriteWrapper}>
+                            <Image source={{ uri: pokemon.sprites.front_shiny }} style={detailsStyles.sprite} />
+                            <Text style={detailsStyles.spriteLabel}>Shiny</Text>
                         </View>
                     )}
                     {pokemon.sprites.back_shiny && (
-                        <View style={styles.spriteWrapper}>
-                            <Image source={{ uri: pokemon.sprites.back_shiny }} style={styles.sprite} />
-                            <Text style={styles.spriteLabel}>Shiny Back</Text>
+                        <View style={detailsStyles.spriteWrapper}>
+                            <Image source={{ uri: pokemon.sprites.back_shiny }} style={detailsStyles.sprite} />
+                            <Text style={detailsStyles.spriteLabel}>Shiny Back</Text>
                         </View>
                     )}
                 </View>
@@ -204,190 +203,3 @@ export default function Details() {
         </ScrollView>
     );
 }
-
-const styles = StyleSheet.create({
-    scrollContainer: {
-        padding: SPACING.md,
-        gap: SPACING.md,
-        paddingBottom: SPACING.xl,
-        paddingTop: SPACING.lg + (StatusBar.currentHeight || 0),
-    },
-    header: {
-        padding: SPACING.lg,
-        borderRadius: SPACING.md,
-        ...SHADOWS.medium,
-    },
-    backButton: {
-        marginBottom: SPACING.sm,
-    },
-    backButtonText: {
-        fontSize: TYPOGRAPHY.subtitle.fontSize,
-        fontWeight: TYPOGRAPHY.subtitle.fontWeight,
-        color: COLORS.text,
-    },
-    pokemonName: {
-        fontSize: TYPOGRAPHY.header.fontSize,
-        fontWeight: TYPOGRAPHY.header.fontWeight,
-        color: COLORS.text,
-        textTransform: 'capitalize',
-    },
-    pokemonId: {
-        fontSize: TYPOGRAPHY.subtitle.fontSize,
-        fontWeight: TYPOGRAPHY.subtitle.fontWeight,
-        color: COLORS.textSecondary,
-    },
-    imageContainer: {
-        backgroundColor: COLORS.surface,
-        borderRadius: SPACING.lg,
-        padding: SPACING.lg,
-        alignItems: 'center',
-        ...SHADOWS.medium,
-    },
-    mainImage: {
-        width: width * 0.6,
-        height: width * 0.6,
-    },
-    imageHint: {
-        fontSize: TYPOGRAPHY.caption.fontSize,
-        color: COLORS.textSecondary,
-        marginTop: SPACING.sm,
-    },
-    typesContainer: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        gap: SPACING.sm,
-        flexWrap: 'wrap',
-    },
-    typeBadge: {
-        paddingHorizontal: SPACING.lg,
-        paddingVertical: SPACING.sm,
-        borderRadius: BORDER_RADIUS.pill,
-    },
-    typeText: {
-        fontSize: TYPOGRAPHY.subtitle.fontSize,
-        fontWeight: TYPOGRAPHY.subtitle.fontWeight,
-        color: COLORS.background,
-        textTransform: 'capitalize',
-    },
-    infoCard: {
-        backgroundColor: COLORS.surface,
-        borderRadius: SPACING.lg,
-        padding: SPACING.lg,
-        ...SHADOWS.medium,
-    },
-    sectionTitle: {
-        fontSize: TYPOGRAPHY.title.fontSize,
-        fontWeight: TYPOGRAPHY.title.fontWeight,
-        color: COLORS.text,
-        marginBottom: SPACING.md,
-    },
-    statsGrid: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        gap: SPACING.md,
-    },
-    statItem: {
-        flex: 1,
-        alignItems: 'center',
-        gap: SPACING.xs,
-    },
-    statLabel: {
-        fontSize: TYPOGRAPHY.caption.fontSize,
-        color: COLORS.textSecondary,
-    },
-    statValue: {
-        fontSize: TYPOGRAPHY.subtitle.fontSize,
-        fontWeight: TYPOGRAPHY.subtitle.fontWeight,
-        color: COLORS.text,
-    },
-    statsList: {
-        gap: SPACING.sm,
-    },
-    statRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: SPACING.sm,
-    },
-    statName: {
-        fontSize: TYPOGRAPHY.body.fontSize,
-        color: COLORS.text,
-        textTransform: 'capitalize',
-        minWidth: 100,
-    },
-    statBarContainer: {
-        flex: 1,
-        height: 8,
-        backgroundColor: COLORS.border,
-        borderRadius: SPACING.xs,
-        overflow: 'hidden',
-    },
-    statBar: {
-        height: '100%',
-        borderRadius: SPACING.xs,
-    },
-    statNumber: {
-        fontSize: TYPOGRAPHY.body.fontSize,
-        color: COLORS.text,
-        fontWeight: 'bold',
-        minWidth: 30,
-        textAlign: 'right',
-    },
-    abilitiesContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: SPACING.sm,
-    },
-    abilityBadge: {
-        backgroundColor: COLORS.primary,
-        paddingHorizontal: SPACING.md,
-        paddingVertical: SPACING.sm,
-        borderRadius: BORDER_RADIUS.md,
-    },
-    abilityText: {
-        fontSize: TYPOGRAPHY.body.fontSize,
-        color: COLORS.background,
-        fontWeight: 'bold',
-        textTransform: 'capitalize',
-    },
-    movesContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: SPACING.sm,
-    },
-    moveBadge: {
-        backgroundColor: COLORS.surface,
-        borderWidth: 1,
-        borderColor: COLORS.border,
-        paddingHorizontal: SPACING.md,
-        paddingVertical: SPACING.sm,
-        borderRadius: BORDER_RADIUS.md,
-    },
-    moveText: {
-        fontSize: TYPOGRAPHY.body.fontSize,
-        color: COLORS.text,
-        textTransform: 'capitalize',
-    },
-    spritesGrid: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        gap: SPACING.md,
-        justifyContent: 'space-between',
-    },
-    spriteWrapper: {
-        alignItems: 'center',
-        gap: SPACING.xs,
-        flex: 1,
-        minWidth: '48%',
-    },
-    sprite: {
-        width: 80,
-        height: 80,
-        backgroundColor: COLORS.background,
-        borderRadius: SPACING.sm,
-    },
-    spriteLabel: {
-        fontSize: TYPOGRAPHY.caption.fontSize,
-        color: COLORS.textSecondary,
-        textTransform: 'capitalize',
-    },
-});

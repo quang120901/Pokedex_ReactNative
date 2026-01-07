@@ -172,6 +172,248 @@ export const globalStyles = StyleSheet.create({
   },
 });
 
+// Index page specific styles
+export const indexStyles = StyleSheet.create({
+  scrollContainer: {
+    gap: SPACING.md,
+    padding: SPACING.md,
+    paddingBottom: SPACING.xl,
+  },
+  header: {
+    backgroundColor: COLORS.primary,
+    padding: SPACING.lg,
+    borderRadius: SPACING.md,
+    alignItems: 'center',
+    gap: SPACING.xs,
+  },
+  headerTitle: {
+    fontSize: TYPOGRAPHY.header.fontSize,
+    fontWeight: TYPOGRAPHY.header.fontWeight,
+    color: COLORS.background,
+  },
+  headerSubtitle: {
+    fontSize: TYPOGRAPHY.caption.fontSize,
+    color: COLORS.background,
+    opacity: 0.9,
+  },
+  grid: {
+    gap: SPACING.md,
+  },
+  row: {
+    flexDirection: 'row',
+    gap: SPACING.md,
+    justifyContent: 'space-between',
+  },
+  cardWrapper: {
+    flex: 1,
+  },
+  emptyText: {
+    fontSize: TYPOGRAPHY.subtitle.fontSize,
+    fontWeight: TYPOGRAPHY.subtitle.fontWeight,
+    color: COLORS.textSecondary,
+  },
+  loadingMoreContainer: {
+    padding: SPACING.md,
+    alignItems: 'center',
+  },
+  endMessage: {
+    padding: SPACING.md,
+    alignItems: 'center',
+  },
+  endText: {
+    fontSize: TYPOGRAPHY.caption.fontSize,
+    color: COLORS.textSecondary,
+    fontStyle: 'italic',
+  },
+});
+
+// Details page specific styles
+export const detailsStyles = StyleSheet.create({
+  scrollContainer: {
+    padding: SPACING.md,
+    gap: SPACING.md,
+    paddingBottom: SPACING.xl,
+  },
+  header: {
+    padding: SPACING.lg,
+    borderRadius: SPACING.md,
+    ...SHADOWS.medium,
+  },
+  backButton: {
+    marginBottom: SPACING.sm,
+  },
+  backButtonText: {
+    fontSize: TYPOGRAPHY.subtitle.fontSize,
+    fontWeight: TYPOGRAPHY.subtitle.fontWeight,
+    color: COLORS.text,
+  },
+  pokemonName: {
+    fontSize: TYPOGRAPHY.header.fontSize,
+    fontWeight: TYPOGRAPHY.header.fontWeight,
+    color: COLORS.text,
+    textTransform: 'capitalize',
+  },
+  pokemonId: {
+    fontSize: TYPOGRAPHY.subtitle.fontSize,
+    fontWeight: TYPOGRAPHY.subtitle.fontWeight,
+    color: COLORS.textSecondary,
+  },
+  imageContainer: {
+    backgroundColor: COLORS.surface,
+    borderRadius: SPACING.lg,
+    padding: SPACING.lg,
+    alignItems: 'center',
+    ...SHADOWS.medium,
+  },
+  mainImage: {
+    width: '100%',
+    height: '100%',
+  },
+  imageHint: {
+    fontSize: TYPOGRAPHY.caption.fontSize,
+    color: COLORS.textSecondary,
+    marginTop: SPACING.sm,
+  },
+  typesContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: SPACING.sm,
+    flexWrap: 'wrap',
+  },
+  typeBadge: {
+    paddingHorizontal: SPACING.lg,
+    paddingVertical: SPACING.sm,
+    borderRadius: BORDER_RADIUS.pill,
+  },
+  typeText: {
+    fontSize: TYPOGRAPHY.subtitle.fontSize,
+    fontWeight: TYPOGRAPHY.subtitle.fontWeight,
+    color: COLORS.background,
+    textTransform: 'capitalize',
+  },
+  infoCard: {
+    backgroundColor: COLORS.surface,
+    borderRadius: SPACING.lg,
+    padding: SPACING.lg,
+    ...SHADOWS.medium,
+  },
+  sectionTitle: {
+    fontSize: TYPOGRAPHY.title.fontSize,
+    fontWeight: TYPOGRAPHY.title.fontWeight,
+    color: COLORS.text,
+    marginBottom: SPACING.md,
+  },
+  statsGrid: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: SPACING.md,
+  },
+  statItem: {
+    flex: 1,
+    alignItems: 'center',
+    gap: SPACING.xs,
+  },
+  statLabel: {
+    fontSize: TYPOGRAPHY.caption.fontSize,
+    color: COLORS.textSecondary,
+  },
+  statValue: {
+    fontSize: TYPOGRAPHY.subtitle.fontSize,
+    fontWeight: TYPOGRAPHY.subtitle.fontWeight,
+    color: COLORS.text,
+  },
+  statsList: {
+    gap: SPACING.sm,
+  },
+  statRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.sm,
+  },
+  statName: {
+    fontSize: TYPOGRAPHY.body.fontSize,
+    color: COLORS.text,
+    textTransform: 'capitalize',
+    minWidth: 100,
+  },
+  statBarContainer: {
+    flex: 1,
+    height: 8,
+    backgroundColor: COLORS.border,
+    borderRadius: SPACING.xs,
+    overflow: 'hidden',
+  },
+  statBar: {
+    height: '100%',
+    borderRadius: SPACING.xs,
+  },
+  statNumber: {
+    fontSize: TYPOGRAPHY.body.fontSize,
+    color: COLORS.text,
+    fontWeight: 'bold',
+    minWidth: 30,
+    textAlign: 'right',
+  },
+  abilitiesContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: SPACING.sm,
+  },
+  abilityBadge: {
+    backgroundColor: COLORS.primary,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    borderRadius: BORDER_RADIUS.md,
+  },
+  abilityText: {
+    fontSize: TYPOGRAPHY.body.fontSize,
+    color: COLORS.background,
+    fontWeight: 'bold',
+    textTransform: 'capitalize',
+  },
+  movesContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: SPACING.sm,
+  },
+  moveBadge: {
+    backgroundColor: COLORS.surface,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    borderRadius: BORDER_RADIUS.md,
+  },
+  moveText: {
+    fontSize: TYPOGRAPHY.body.fontSize,
+    color: COLORS.text,
+    textTransform: 'capitalize',
+  },
+  spritesGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: SPACING.md,
+    justifyContent: 'space-between',
+  },
+  spriteWrapper: {
+    alignItems: 'center',
+    gap: SPACING.xs,
+    flex: 1,
+    minWidth: '48%',
+  },
+  sprite: {
+    width: 80,
+    height: 80,
+    backgroundColor: COLORS.background,
+    borderRadius: SPACING.sm,
+  },
+  spriteLabel: {
+    fontSize: TYPOGRAPHY.caption.fontSize,
+    color: COLORS.textSecondary,
+    textTransform: 'capitalize',
+  },
+});
+
 export default {
   COLORS,
   SPACING,
@@ -180,4 +422,6 @@ export default {
   SHADOWS,
   ANIMATIONS,
   globalStyles,
+  indexStyles,
+  detailsStyles,
 };
