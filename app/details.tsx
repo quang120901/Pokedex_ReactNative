@@ -149,7 +149,7 @@ export default function Details() {
                 <Text style={detailsStyles.sectionTitle}>Abilities</Text>
                 <View style={detailsStyles.abilitiesContainer}>
                     {pokemon.abilities?.map((ability: any, index: number) => (
-                        <View key={index} style={detailsStyles.abilityBadge}>
+                        <View key={index} style={[detailsStyles.abilityBadge, { backgroundColor: backgroundColor }]}>
                             <Text style={detailsStyles.abilityText}>{ability.ability.name}</Text>
                         </View>
                     ))}
