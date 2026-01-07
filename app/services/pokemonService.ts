@@ -74,19 +74,6 @@ export const pokemonService = {
       console.error(`Error fetching full details for ${idOrName}:`, error);
       return null;
     }
-  },
-
-  /**
-   * Searches for pokemons by name
-   */
-  async searchPokemons(query: string): Promise<any[]> {
-    try {
-      const pokemon = await this.getPokemonDetailsByName(query);
-      return pokemon ? [pokemon] : [];
-    } catch (error) {
-      console.error('Error searching pokemons:', error);
-      return [];
-    }
   }
 };
 
