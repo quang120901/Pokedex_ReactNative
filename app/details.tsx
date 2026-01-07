@@ -173,7 +173,7 @@ export default function Details() {
             {/* Sprites Gallery */}
             <View style={detailsStyles.infoCard}>
                 <Text style={detailsStyles.sectionTitle}>Sprites Gallery</Text>
-                <View style={detailsStyles.spritesGrid}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={detailsStyles.spritesGrid}>
                     {pokemon.sprites?.front_default && (
                         <View style={detailsStyles.spriteWrapper}>
                             <Image source={{ uri: pokemon.sprites.front_default }} style={detailsStyles.sprite} />
@@ -198,7 +198,7 @@ export default function Details() {
                             <Text style={detailsStyles.spriteLabel}>Shiny Back</Text>
                         </View>
                     )}
-                </View>
+                </ScrollView>
             </View>
         </ScrollView>
     );

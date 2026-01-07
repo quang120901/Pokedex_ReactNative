@@ -391,26 +391,27 @@ export const detailsStyles = StyleSheet.create({
   },
   spritesGrid: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
     gap: SPACING.md,
-    justifyContent: 'space-between',
+    paddingVertical: SPACING.xs,
   },
   spriteWrapper: {
     alignItems: 'center',
     gap: SPACING.xs,
-    flex: 1,
-    minWidth: '48%',
+    width: 80,
   },
   sprite: {
     width: 80,
     height: 80,
     backgroundColor: COLORS.background,
     borderRadius: SPACING.sm,
+    borderWidth: 1,
+    borderColor: COLORS.border,
   },
   spriteLabel: {
     fontSize: TYPOGRAPHY.caption.fontSize,
     color: COLORS.textSecondary,
     textTransform: 'capitalize',
+    textAlign: 'center',
   },
 });
 
