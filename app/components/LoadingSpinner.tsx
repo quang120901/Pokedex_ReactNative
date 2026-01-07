@@ -8,7 +8,7 @@ interface Props {
     message?: string;
 }
 
-export const LoadingSpinner: React.FC<Props> = ({ message = 'Loading...' }) => {
+const LoadingSpinner: React.FC<Props> = ({ message = 'Loading...' }) => {
     return (
         <View style={styles.container}>
             <ActivityIndicator size="large" color={COLORS.primary} />

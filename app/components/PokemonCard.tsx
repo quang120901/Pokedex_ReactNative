@@ -2,18 +2,16 @@ import { Link } from 'expo-router';
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import theme from '../styles/theme';
-import PokemonTypes from '../types/pokemon';
 
 const { BORDER_RADIUS, COLORS, SHADOWS, SPACING, TYPOGRAPHY } = theme;
-const { PokemonCard: PokemonCardType } = PokemonTypes;
 
 interface Props {
     pokemon: any;
     variant?: 'default' | 'compact';
 }
 
-export const PokemonCard: React.FC<Props> = ({ pokemon, variant = 'default' }) => {
-    const primaryType = pokemon.types[0].type.name;
+const PokemonCard: React.FC<Props> = ({ pokemon, variant = 'default' }) => {
+    const primaryType = pokemon.types?.[0]?.type?.name || 'normal';
     const backgroundColor = COLORS[primaryType as keyof typeof COLORS] || COLORS.normal;
     const cardBackgroundColor = backgroundColor + '50'; // 30% opacity
 
@@ -21,18 +19,20 @@ export const PokemonCard: React.FC<Props> = ({ pokemon, variant = 'default' }) =
         <View style={[styles.card, { backgroundColor: cardBackgroundColor }]}>
             <Text style={styles.name}>{pokemon.name}</Text>
             <View style={styles.typeContainer}>
-                {pokemon.types.map((type: any, index: number) => (
-                    <View key={index} style={[styles.typeBadge, { backgroundColor: COLORS[type.type.name as keyof typeof COLORS] }]}>
+                {pokemon.types?.map((type: any, index: number) => (
+                    <View key={index} style={[styles.typeBadge, { backgroundColor: COLORS[type.type.name as keyof typeof COLORS] || COLORS.normal }]}>
                         <Text style={styles.typeText}>{type.type.name}</Text>
                     </View>
                 ))}
             </View>
             <View style={styles.imageContainer}>
-                <Image
-                    source={{ uri: pokemon.image }}
-                    style={styles.image}
-                    resizeMode="contain"
-                />
+                {pokemon.image && (
+                    <Image
+                        source={{ uri: pokemon.image }}
+                        style={styles.image}
+                        resizeMode="contain"
+                    />
+                )}
                 {variant === 'default' && pokemon.imageBack && (
                     <Image
                         source={{ uri: pokemon.imageBack }}
@@ -41,7 +41,7 @@ export const PokemonCard: React.FC<Props> = ({ pokemon, variant = 'default' }) =
                     />
                 )}
             </View>
-            <Text style={styles.id}>#{pokemon.id.toString().padStart(3, '0')}</Text>
+            <Text style={styles.id}>#{pokemon.id?.toString().padStart(3, '0') || '000'}</Text>
         </View>
     );
 

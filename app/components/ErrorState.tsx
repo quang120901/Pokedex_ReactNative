@@ -9,7 +9,7 @@ interface Props {
     onRetry?: () => void;
 }
 
-export const ErrorState: React.FC<Props> = ({ message, onRetry }) => {
+const ErrorState: React.FC<Props> = ({ message, onRetry }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>⚠️ Error</Text>

@@ -1,5 +1,5 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Dimensions,
     Image,
@@ -13,10 +13,8 @@ import ErrorState from "./components/ErrorState";
 import LoadingSpinner from "./components/LoadingSpinner";
 import pokemonService from "./services/pokemonService";
 import theme from "./styles/theme";
-import PokemonTypes from "./types/pokemon";
 
 const { COLORS, detailsStyles, SPACING } = theme;
-const { PokemonDetails } = PokemonTypes;
 
 const { width } = Dimensions.get('window');
 
@@ -63,7 +61,7 @@ export default function Details() {
         return <ErrorState message={error || "Pokemon not found"} onRetry={fetchPokemonDetails} />;
     }
 
-    const primaryType = pokemon.types[0].type.name;
+    const primaryType = pokemon.types?.[0]?.type?.name || 'normal';
     const backgroundColor = COLORS[primaryType as keyof typeof COLORS] || COLORS.normal;
     const cardBackgroundColor = backgroundColor + '40';
 
@@ -78,24 +76,26 @@ export default function Details() {
                 <TouchableOpacity onPress={() => router.back()} style={detailsStyles.backButton}>
                     <Text style={detailsStyles.backButtonText}>← Back</Text>
                 </TouchableOpacity>
-                <Text style={detailsStyles.pokemonName}>{pokemon.name}</Text>
-                <Text style={detailsStyles.pokemonId}>#{pokemon.id.toString().padStart(3, '0')}</Text>
+                <Text style={detailsStyles.pokemonName}>{pokemon.name || 'Unknown'}</Text>
+                <Text style={detailsStyles.pokemonId}>#{pokemon.id?.toString().padStart(3, '0') || '000'}</Text>
             </View>
 
             {/* Main Image */}
             <TouchableOpacity onPress={toggleImage} style={detailsStyles.imageContainer}>
-                <Image
-                    source={{ uri: showBackImage ? pokemon.sprites.back_default : pokemon.sprites.front_default }}
-                    style={[detailsStyles.mainImage, { width: width * 0.6, height: width * 0.6 }]}
-                    resizeMode="contain"
-                />
+                {pokemon.sprites?.front_default && (
+                    <Image
+                        source={{ uri: showBackImage ? (pokemon.sprites.back_default || pokemon.sprites.front_default) : pokemon.sprites.front_default }}
+                        style={[detailsStyles.mainImage, { width: width * 0.6, height: width * 0.6 }]}
+                        resizeMode="contain"
+                    />
+                )}
                 <Text style={detailsStyles.imageHint}>Tap to flip</Text>
             </TouchableOpacity>
 
             {/* Types */}
             <View style={detailsStyles.typesContainer}>
-                {pokemon.types.map((type: any, index: number) => (
-                    <View key={index} style={[detailsStyles.typeBadge, { backgroundColor: COLORS[type.type.name as keyof typeof COLORS] }]}>
+                {pokemon.types?.map((type: any, index: number) => (
+                    <View key={index} style={[detailsStyles.typeBadge, { backgroundColor: COLORS[type.type.name as keyof typeof COLORS] || COLORS.normal }]}>
                         <Text style={detailsStyles.typeText}>{type.type.name}</Text>
                     </View>
                 ))}
@@ -107,15 +107,15 @@ export default function Details() {
                 <View style={detailsStyles.statsGrid}>
                     <View style={detailsStyles.statItem}>
                         <Text style={detailsStyles.statLabel}>Height</Text>
-                        <Text style={detailsStyles.statValue}>{(pokemon.height / 10).toFixed(1)} m</Text>
+                        <Text style={detailsStyles.statValue}>{pokemon.height ? (pokemon.height / 10).toFixed(1) : '0.0'} m</Text>
                     </View>
                     <View style={detailsStyles.statItem}>
                         <Text style={detailsStyles.statLabel}>Weight</Text>
-                        <Text style={detailsStyles.statValue}>{(pokemon.weight / 10).toFixed(1)} kg</Text>
+                        <Text style={detailsStyles.statValue}>{pokemon.weight ? (pokemon.weight / 10).toFixed(1) : '0.0'} kg</Text>
                     </View>
                     <View style={detailsStyles.statItem}>
                         <Text style={detailsStyles.statLabel}>Base Exp</Text>
-                        <Text style={detailsStyles.statValue}>{pokemon.base_experience}</Text>
+                        <Text style={detailsStyles.statValue}>{pokemon.base_experience || '0'}</Text>
                     </View>
                 </View>
             </View>
@@ -124,7 +124,7 @@ export default function Details() {
             <View style={detailsStyles.infoCard}>
                 <Text style={detailsStyles.sectionTitle}>Stats</Text>
                 <View style={detailsStyles.statsList}>
-                    {pokemon.stats.map((stat: any, index: number) => (
+                    {pokemon.stats?.map((stat: any, index: number) => (
                         <View key={index} style={detailsStyles.statRow}>
                             <Text style={detailsStyles.statName}>{stat.stat.name}</Text>
                             <View style={detailsStyles.statBarContainer}>
@@ -148,7 +148,7 @@ export default function Details() {
             <View style={detailsStyles.infoCard}>
                 <Text style={detailsStyles.sectionTitle}>Abilities</Text>
                 <View style={detailsStyles.abilitiesContainer}>
-                    {pokemon.abilities.map((ability: any, index: number) => (
+                    {pokemon.abilities?.map((ability: any, index: number) => (
                         <View key={index} style={detailsStyles.abilityBadge}>
                             <Text style={detailsStyles.abilityText}>{ability.ability.name}</Text>
                         </View>
@@ -157,7 +157,7 @@ export default function Details() {
             </View>
 
             {/* Moves Preview */}
-            {pokemon.moves.length > 0 && (
+            {pokemon.moves && pokemon.moves.length > 0 && (
                 <View style={detailsStyles.infoCard}>
                     <Text style={detailsStyles.sectionTitle}>Sample Moves ({pokemon.moves.length} total)</Text>
                     <View style={detailsStyles.movesContainer}>
@@ -174,25 +174,25 @@ export default function Details() {
             <View style={detailsStyles.infoCard}>
                 <Text style={detailsStyles.sectionTitle}>Sprites Gallery</Text>
                 <View style={detailsStyles.spritesGrid}>
-                    {pokemon.sprites.front_default && (
+                    {pokemon.sprites?.front_default && (
                         <View style={detailsStyles.spriteWrapper}>
                             <Image source={{ uri: pokemon.sprites.front_default }} style={detailsStyles.sprite} />
                             <Text style={detailsStyles.spriteLabel}>Front</Text>
                         </View>
                     )}
-                    {pokemon.sprites.back_default && (
+                    {pokemon.sprites?.back_default && (
                         <View style={detailsStyles.spriteWrapper}>
                             <Image source={{ uri: pokemon.sprites.back_default }} style={detailsStyles.sprite} />
                             <Text style={detailsStyles.spriteLabel}>Back</Text>
                         </View>
                     )}
-                    {pokemon.sprites.front_shiny && (
+                    {pokemon.sprites?.front_shiny && (
                         <View style={detailsStyles.spriteWrapper}>
                             <Image source={{ uri: pokemon.sprites.front_shiny }} style={detailsStyles.sprite} />
                             <Text style={detailsStyles.spriteLabel}>Shiny</Text>
                         </View>
                     )}
-                    {pokemon.sprites.back_shiny && (
+                    {pokemon.sprites?.back_shiny && (
                         <View style={detailsStyles.spriteWrapper}>
                             <Image source={{ uri: pokemon.sprites.back_shiny }} style={detailsStyles.sprite} />
                             <Text style={detailsStyles.spriteLabel}>Shiny Back</Text>

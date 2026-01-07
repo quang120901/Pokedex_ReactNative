@@ -4,7 +4,7 @@ const { PokemonCard, PokemonDetails, PokemonListResponse } = PokemonTypes;
 
 const BASE_URL = 'https://pokeapi.co/api/v2';
 
-export const pokemonService = {
+const pokemonService = {
   /**
    * Fetches a list of pokemons with pagination
    */

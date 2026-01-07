@@ -5,10 +5,8 @@ import LoadingSpinner from "./components/LoadingSpinner";
 import PokemonCard from "./components/PokemonCard";
 import pokemonService from "./services/pokemonService";
 import theme from "./styles/theme";
-import PokemonTypes from "./types/pokemon";
 
 const { COLORS, globalStyles, indexStyles, SPACING, TYPOGRAPHY } = theme;
-const { PokemonCard: PokemonCardType } = PokemonTypes;
 
 export default function Index() {
   const [pokemons, setPokemons] = useState<any[]>([]);
