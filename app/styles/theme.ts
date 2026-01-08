@@ -263,14 +263,50 @@ export const detailsStyles = StyleSheet.create({
   },
   header: {
     padding: SPACING.lg,
-    borderRadius: SPACING.md,
+    borderRadius: SPACING.lg,
+  },
+  headerTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: SPACING.md,
   },
   backButton: {
-    marginBottom: SPACING.sm,
+    backgroundColor: 'transparent',
+    padding: SPACING.sm,
+    borderRadius: SPACING.sm,
   },
   backButtonText: {
     fontSize: TYPOGRAPHY.subtitle.fontSize,
     fontWeight: TYPOGRAPHY.subtitle.fontWeight,
+  },
+  themeToggle: {
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 20,
+    borderWidth: 2,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    shadowColor: 'rgba(0,0,0,0.3)',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  themeToggleEmoji: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  themeToggleText: {
+    fontWeight: '600',
+    fontSize: 11,
+    textTransform: 'uppercase',
+  },
+  headerContent: {
+    alignItems: 'center',
+    gap: SPACING.xs,
   },
   pokemonName: {
     fontSize: TYPOGRAPHY.header.fontSize,
@@ -299,11 +335,13 @@ export const detailsStyles = StyleSheet.create({
     justifyContent: 'center',
     gap: SPACING.sm,
     flexWrap: 'wrap',
+    padding: SPACING.md,
+    borderRadius: SPACING.lg,
   },
   typeBadge: {
     paddingHorizontal: SPACING.lg,
     paddingVertical: SPACING.sm,
-    borderRadius: BORDER_RADIUS.pill,
+    borderRadius: SPACING.xxl,
   },
   typeText: {
     fontSize: TYPOGRAPHY.subtitle.fontSize,
@@ -326,6 +364,8 @@ export const detailsStyles = StyleSheet.create({
   },
   statItem: {
     flex: 1,
+    padding: SPACING.md,
+    borderRadius: SPACING.md,
     alignItems: 'center',
     gap: SPACING.xs,
   },
@@ -340,27 +380,30 @@ export const detailsStyles = StyleSheet.create({
     gap: SPACING.sm,
   },
   statRow: {
+    padding: SPACING.sm,
+    borderRadius: SPACING.sm,
     flexDirection: 'row',
     alignItems: 'center',
     gap: SPACING.sm,
   },
   statName: {
-    fontSize: TYPOGRAPHY.body.fontSize,
+    fontSize: 14,
     textTransform: 'capitalize',
-    minWidth: 100,
+    minWidth: 80,
   },
   statBarContainer: {
     flex: 1,
     height: 8,
     borderRadius: SPACING.xs,
     overflow: 'hidden',
+    backgroundColor: 'transparent',
   },
   statBar: {
     height: '100%',
     borderRadius: SPACING.xs,
   },
   statNumber: {
-    fontSize: TYPOGRAPHY.body.fontSize,
+    fontSize: 14,
     fontWeight: 'bold',
     minWidth: 30,
     textAlign: 'right',
@@ -373,10 +416,10 @@ export const detailsStyles = StyleSheet.create({
   abilityBadge: {
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
-    borderRadius: BORDER_RADIUS.md,
+    borderRadius: SPACING.md,
   },
   abilityText: {
-    fontSize: TYPOGRAPHY.body.fontSize,
+    fontSize: 14,
     fontWeight: 'bold',
     textTransform: 'capitalize',
   },
@@ -389,10 +432,10 @@ export const detailsStyles = StyleSheet.create({
     borderWidth: 1,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
-    borderRadius: BORDER_RADIUS.md,
+    borderRadius: SPACING.md,
   },
   moveText: {
-    fontSize: TYPOGRAPHY.body.fontSize,
+    fontSize: 14,
     textTransform: 'capitalize',
   },
   spritesGrid: {
@@ -412,7 +455,7 @@ export const detailsStyles = StyleSheet.create({
     borderWidth: 1,
   },
   spriteLabel: {
-    fontSize: TYPOGRAPHY.caption.fontSize,
+    fontSize: 12,
     textTransform: 'capitalize',
     textAlign: 'center',
   },

@@ -15,7 +15,7 @@ import LoadingSpinner from "./components/LoadingSpinner";
 import pokemonService from "./services/pokemonService";
 import theme from "./styles/theme";
 
-const { detailsStyles, SPACING, SHADOWS } = theme;
+const { detailsStyles, SPACING, SHADOWS, COLORS } = theme;
 
 const { width } = Dimensions.get('window');
 
@@ -83,48 +83,39 @@ export default function Details() {
                 shadowColor: colors.shadow,
                 ...SHADOWS.medium
             }]}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
-                    <TouchableOpacity onPress={() => router.back()} style={detailsStyles.backButton}>
+                <View style={detailsStyles.headerTopRow}>
+                    <TouchableOpacity onPress={() => router.back()} style={[detailsStyles.backButton, { backgroundColor: colors.background }]}>
                         <Text style={[detailsStyles.backButtonText, { color: colors.text }]}>← Back</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={toggleTheme}
-                        style={{
+                        style={[detailsStyles.themeToggle, {
                             backgroundColor: themeMode === 'light' ? colors.background : colors.surface,
-                            paddingHorizontal: 14,
-                            paddingVertical: 8,
-                            borderRadius: 20,
-                            borderWidth: 2,
-                            borderColor: colors.background,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            gap: 6,
-                            shadowColor: 'rgba(0,0,0,0.3)',
-                            shadowOffset: { width: 0, height: 2 },
-                            shadowOpacity: 0.3,
-                            shadowRadius: 3,
-                            elevation: 2,
-                        }}
+                            borderColor: colors.background
+                        }]}
                     >
-                        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>
+                        <Text style={detailsStyles.themeToggleEmoji}>
                             {themeMode === 'light' ? '🌙' : '☀️'}
                         </Text>
-                        <Text style={{
-                            color: themeMode === 'light' ? colors.text : colors.textSecondary,
-                            fontWeight: '600',
-                            fontSize: 11,
-                            textTransform: 'uppercase'
-                        }}>
+                        <Text style={[detailsStyles.themeToggleText, {
+                            color: themeMode === 'light' ? colors.text : colors.textSecondary
+                        }]}>
                             {themeMode === 'light' ? 'Dark' : 'Light'}
                         </Text>
                     </TouchableOpacity>
                 </View>
-                <Text style={[detailsStyles.pokemonName, { color: colors.text }]}>{pokemon.name || 'Unknown'}</Text>
-                <Text style={[detailsStyles.pokemonId, { color: colors.textSecondary }]}>#{pokemon.id?.toString().padStart(3, '0') || '000'}</Text>
+                <View style={detailsStyles.headerContent}>
+                    <Text style={[detailsStyles.pokemonName, { color: colors.text }]}>{pokemon.name || 'Unknown'}</Text>
+                    <Text style={[detailsStyles.pokemonId, { color: colors.textSecondary }]}>#{pokemon.id?.toString().padStart(3, '0') || '000'}</Text>
+                </View>
             </View>
 
             {/* Main Image */}
-            <TouchableOpacity onPress={toggleImage} style={[detailsStyles.imageContainer, { shadowColor: colors.shadow, ...SHADOWS.medium }]}>
+            <TouchableOpacity onPress={toggleImage} style={[detailsStyles.imageContainer, {
+                shadowColor: colors.shadow,
+                ...SHADOWS.medium,
+                backgroundColor: colors.background
+            }]}>
                 {pokemon.sprites?.front_default && (
                     <Image
                         source={{ uri: showBackImage ? (pokemon.sprites.back_default || pokemon.sprites.front_default) : pokemon.sprites.front_default }}
@@ -136,27 +127,36 @@ export default function Details() {
             </TouchableOpacity>
 
             {/* Types */}
-            <View style={detailsStyles.typesContainer}>
+            <View style={[detailsStyles.typesContainer, {
+                backgroundColor: colors.background,
+                ...SHADOWS.small
+            }]}>
                 {pokemon.types?.map((type: any, index: number) => (
-                    <View key={index} style={[detailsStyles.typeBadge, { backgroundColor: colors[type.type.name as keyof typeof colors] || colors.normal }]}>
-                        <Text style={detailsStyles.typeText}>{type.type.name}</Text>
+                    <View key={index} style={[detailsStyles.typeBadge, {
+                        backgroundColor: colors[type.type.name as keyof typeof colors] || colors.normal
+                    }]}>
+                        <Text style={[detailsStyles.typeText, { color: '#FFFFFF' }]}>{type.type.name}</Text>
                     </View>
                 ))}
             </View>
 
             {/* Basic Info */}
-            <View style={[detailsStyles.infoCard, { shadowColor: colors.shadow, ...SHADOWS.medium }]}>
+            <View style={[detailsStyles.infoCard, {
+                backgroundColor: colors.background,
+                shadowColor: colors.shadow,
+                ...SHADOWS.medium
+            }]}>
                 <Text style={[detailsStyles.sectionTitle, { color: colors.text }]}>Basic Info</Text>
                 <View style={detailsStyles.statsGrid}>
-                    <View style={detailsStyles.statItem}>
+                    <View style={[detailsStyles.statItem, { backgroundColor: colors.surface }]}>
                         <Text style={[detailsStyles.statLabel, { color: colors.textSecondary }]}>Height</Text>
                         <Text style={[detailsStyles.statValue, { color: colors.text }]}>{pokemon.height ? (pokemon.height / 10).toFixed(1) : '0.0'} m</Text>
                     </View>
-                    <View style={detailsStyles.statItem}>
+                    <View style={[detailsStyles.statItem, { backgroundColor: colors.surface }]}>
                         <Text style={[detailsStyles.statLabel, { color: colors.textSecondary }]}>Weight</Text>
                         <Text style={[detailsStyles.statValue, { color: colors.text }]}>{pokemon.weight ? (pokemon.weight / 10).toFixed(1) : '0.0'} kg</Text>
                     </View>
-                    <View style={detailsStyles.statItem}>
+                    <View style={[detailsStyles.statItem, { backgroundColor: colors.surface }]}>
                         <Text style={[detailsStyles.statLabel, { color: colors.textSecondary }]}>Base Exp</Text>
                         <Text style={[detailsStyles.statValue, { color: colors.text }]}>{pokemon.base_experience || '0'}</Text>
                     </View>
@@ -164,13 +164,17 @@ export default function Details() {
             </View>
 
             {/* Stats */}
-            <View style={[detailsStyles.infoCard, { shadowColor: colors.shadow, ...SHADOWS.medium }]}>
+            <View style={[detailsStyles.infoCard, {
+                backgroundColor: colors.background,
+                shadowColor: colors.shadow,
+                ...SHADOWS.medium
+            }]}>
                 <Text style={[detailsStyles.sectionTitle, { color: colors.text }]}>Stats</Text>
                 <View style={detailsStyles.statsList}>
                     {pokemon.stats?.map((stat: any, index: number) => (
-                        <View key={index} style={detailsStyles.statRow}>
+                        <View key={index} style={[detailsStyles.statRow, { backgroundColor: colors.surface }]}>
                             <Text style={[detailsStyles.statName, { color: colors.text }]}>{stat.stat.name}</Text>
-                            <View style={detailsStyles.statBarContainer}>
+                            <View style={[detailsStyles.statBarContainer, { backgroundColor: colors.border }]}>
                                 <View
                                     style={[
                                         detailsStyles.statBar,
@@ -188,7 +192,11 @@ export default function Details() {
             </View>
 
             {/* Abilities */}
-            <View style={[detailsStyles.infoCard, { shadowColor: colors.shadow, ...SHADOWS.medium }]}>
+            <View style={[detailsStyles.infoCard, {
+                backgroundColor: colors.background,
+                shadowColor: colors.shadow,
+                ...SHADOWS.medium
+            }]}>
                 <Text style={[detailsStyles.sectionTitle, { color: colors.text }]}>Abilities</Text>
                 <View style={detailsStyles.abilitiesContainer}>
                     {pokemon.abilities?.map((ability: any, index: number) => (
@@ -201,11 +209,18 @@ export default function Details() {
 
             {/* Moves Preview */}
             {pokemon.moves && pokemon.moves.length > 0 && (
-                <View style={[detailsStyles.infoCard, { shadowColor: colors.shadow, ...SHADOWS.medium }]}>
+                <View style={[detailsStyles.infoCard, {
+                    backgroundColor: colors.background,
+                    shadowColor: colors.shadow,
+                    ...SHADOWS.medium
+                }]}>
                     <Text style={[detailsStyles.sectionTitle, { color: colors.text }]}>Sample Moves ({pokemon.moves.length} total)</Text>
                     <View style={detailsStyles.movesContainer}>
                         {pokemon.moves.slice(0, 6).map((move: any, index: number) => (
-                            <View key={index} style={[detailsStyles.moveBadge, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                            <View key={index} style={[detailsStyles.moveBadge, {
+                                backgroundColor: colors.surface,
+                                borderColor: colors.border
+                            }]}>
                                 <Text style={[detailsStyles.moveText, { color: colors.text }]}>{move.move.name}</Text>
                             </View>
                         ))}
@@ -214,30 +229,46 @@ export default function Details() {
             )}
 
             {/* Sprites Gallery */}
-            <View style={[detailsStyles.infoCard, { shadowColor: colors.shadow, ...SHADOWS.medium }]}>
+            <View style={[detailsStyles.infoCard, {
+                backgroundColor: colors.background,
+                shadowColor: colors.shadow,
+                ...SHADOWS.medium
+            }]}>
                 <Text style={[detailsStyles.sectionTitle, { color: colors.text }]}>Sprites Gallery</Text>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={detailsStyles.spritesGrid}>
                     {pokemon.sprites?.front_default && (
                         <View style={detailsStyles.spriteWrapper}>
-                            <Image source={{ uri: pokemon.sprites.front_default }} style={[detailsStyles.sprite, { backgroundColor: colors.background, borderColor: colors.border }]} />
+                            <Image source={{ uri: pokemon.sprites.front_default }} style={[detailsStyles.sprite, {
+                                backgroundColor: colors.background,
+                                borderColor: colors.border
+                            }]} />
                             <Text style={[detailsStyles.spriteLabel, { color: colors.textSecondary }]}>Front</Text>
                         </View>
                     )}
                     {pokemon.sprites?.back_default && (
                         <View style={detailsStyles.spriteWrapper}>
-                            <Image source={{ uri: pokemon.sprites.back_default }} style={[detailsStyles.sprite, { backgroundColor: colors.background, borderColor: colors.border }]} />
+                            <Image source={{ uri: pokemon.sprites.back_default }} style={[detailsStyles.sprite, {
+                                backgroundColor: colors.background,
+                                borderColor: colors.border
+                            }]} />
                             <Text style={[detailsStyles.spriteLabel, { color: colors.textSecondary }]}>Back</Text>
                         </View>
                     )}
                     {pokemon.sprites?.front_shiny && (
                         <View style={detailsStyles.spriteWrapper}>
-                            <Image source={{ uri: pokemon.sprites.front_shiny }} style={[detailsStyles.sprite, { backgroundColor: colors.background, borderColor: colors.border }]} />
+                            <Image source={{ uri: pokemon.sprites.front_shiny }} style={[detailsStyles.sprite, {
+                                backgroundColor: colors.background,
+                                borderColor: colors.border
+                            }]} />
                             <Text style={[detailsStyles.spriteLabel, { color: colors.textSecondary }]}>Shiny</Text>
                         </View>
                     )}
                     {pokemon.sprites?.back_shiny && (
                         <View style={detailsStyles.spriteWrapper}>
-                            <Image source={{ uri: pokemon.sprites.back_shiny }} style={[detailsStyles.sprite, { backgroundColor: colors.background, borderColor: colors.border }]} />
+                            <Image source={{ uri: pokemon.sprites.back_shiny }} style={[detailsStyles.sprite, {
+                                backgroundColor: colors.background,
+                                borderColor: colors.border
+                            }]} />
                             <Text style={[detailsStyles.spriteLabel, { color: colors.textSecondary }]}>Shiny Back</Text>
                         </View>
                     )}
