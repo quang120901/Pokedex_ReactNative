@@ -13,9 +13,9 @@ import { useTheme } from "../utils/ThemeContext";
 import ErrorState from "./components/ErrorState";
 import LoadingSpinner from "./components/LoadingSpinner";
 import pokemonService from "./services/pokemonService";
-import theme from "./styles/theme";
-
-const { detailsStyles, SPACING, SHADOWS, COLORS } = theme;
+import { detailsStyles } from "./styles/components/detailsStyles";
+import { SHADOWS } from "./styles/shadows";
+import { SPACING } from "./styles/spacing";
 
 const { width } = Dimensions.get('window');
 

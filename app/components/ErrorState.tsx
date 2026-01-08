@@ -1,9 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useTheme } from '../../utils/ThemeContext';
-import theme from '../styles/theme';
-
-const { BORDER_RADIUS, SPACING, TYPOGRAPHY } = theme;
+import { BORDER_RADIUS, SPACING } from '../styles/spacing';
+import { TYPOGRAPHY } from '../styles/typography';
 
 interface Props {
     message: string;

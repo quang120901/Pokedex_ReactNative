@@ -2,9 +2,9 @@ import { Link } from 'expo-router';
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useTheme } from '../../utils/ThemeContext';
-import theme from '../styles/theme';
-
-const { BORDER_RADIUS, SHADOWS, SPACING, TYPOGRAPHY } = theme;
+import { SHADOWS } from '../styles/shadows';
+import { BORDER_RADIUS, SPACING } from '../styles/spacing';
+import { TYPOGRAPHY } from '../styles/typography';
 
 interface Props {
     pokemon: any;

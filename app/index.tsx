@@ -5,9 +5,10 @@ import ErrorState from "./components/ErrorState";
 import LoadingSpinner from "./components/LoadingSpinner";
 import PokemonCard from "./components/PokemonCard";
 import pokemonService from "./services/pokemonService";
-import theme from "./styles/theme";
-
-const { globalStyles, indexStyles, SPACING, TYPOGRAPHY, searchStyles } = theme;
+import { globalStyles } from "./styles/components/globalStyles";
+import { indexStyles } from "./styles/components/indexStyles";
+import { searchStyles } from "./styles/components/searchStyles";
+import { SPACING } from "./styles/spacing";
 
 export default function Index() {
   const [pokemons, setPokemons] = useState<any[]>([]);

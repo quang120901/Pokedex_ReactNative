@@ -1,9 +1,8 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '../../utils/ThemeContext';
-import theme from '../styles/theme';
-
-const { SPACING, TYPOGRAPHY } = theme;
+import { SPACING } from '../styles/spacing';
+import { TYPOGRAPHY } from '../styles/typography';
 
 interface Props {
     message?: string;
