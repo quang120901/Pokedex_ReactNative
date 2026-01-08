@@ -1,16 +1,16 @@
 import { Stack } from "expo-router";
-import theme from "./styles/theme";
+import { ThemeProvider, useTheme } from "../utils/ThemeContext";
 
-const { COLORS } = theme;
+function StackWrapper() {
+  const { colors } = useTheme();
 
-export default function RootLayout() {
   return (
     <Stack
       screenOptions={{
         headerStyle: {
-          backgroundColor: COLORS.primary,
+          backgroundColor: colors.primary,
         },
-        headerTintColor: COLORS.background,
+        headerTintColor: colors.background,
         headerTitleStyle: {
           fontWeight: 'bold',
         },
@@ -32,5 +32,13 @@ export default function RootLayout() {
         }}
       />
     </Stack>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <ThemeProvider>
+      <StackWrapper />
+    </ThemeProvider>
   );
 }

@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { RefreshControl, ScrollView, StatusBar, Text, View } from "react-native";
+import { RefreshControl, ScrollView, StatusBar, Text, TouchableOpacity, View } from "react-native";
+import { useTheme } from "../utils/ThemeContext";
 import ErrorState from "./components/ErrorState";
 import LoadingSpinner from "./components/LoadingSpinner";
 import PokemonCard from "./components/PokemonCard";
 import pokemonService from "./services/pokemonService";
 import theme from "./styles/theme";
 
-const { COLORS, globalStyles, indexStyles, SPACING, TYPOGRAPHY } = theme;
+const { globalStyles, indexStyles, SPACING, TYPOGRAPHY } = theme;
 
 export default function Index() {
   const [pokemons, setPokemons] = useState<any[]>([]);
@@ -17,6 +18,7 @@ export default function Index() {
   const [hasMore, setHasMore] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
 
+  const { theme, toggleTheme, colors } = useTheme();
   const LIMIT = 12;
 
   useEffect(() => {
@@ -111,15 +113,57 @@ export default function Index() {
         <RefreshControl
           refreshing={refreshing}
           onRefresh={onRefresh}
-          colors={[COLORS.primary]}
-          tintColor={COLORS.primary}
+          colors={[colors.primary]}
+          tintColor={colors.primary}
         />
       }
       onScroll={handleScroll}
       scrollEventThrottle={16}
+      style={{ backgroundColor: colors.background }}
     >
-      <View style={indexStyles.header}>
-        <Text style={indexStyles.headerTitle}>Pokédex</Text>
+      {/* Theme Toggle Button */}
+      <View style={[indexStyles.header, {
+        backgroundColor: colors.primary,
+        shadowColor: colors.shadow,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 8,
+        elevation: 4
+      }]}>
+        <View style={[globalStyles.row, globalStyles.between, { width: '100%' }]}>
+          <Text style={indexStyles.headerTitle}>Pokédex</Text>
+          <TouchableOpacity
+            onPress={toggleTheme}
+            style={{
+              backgroundColor: theme === 'light' ? colors.background : colors.surface,
+              paddingHorizontal: 16,
+              paddingVertical: 10,
+              borderRadius: 25,
+              borderWidth: 2,
+              borderColor: colors.background,
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 8,
+              shadowColor: 'rgba(0,0,0,0.3)',
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.3,
+              shadowRadius: 4,
+              elevation: 3,
+            }}
+          >
+            <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+              {theme === 'light' ? '🌙' : '☀️'}
+            </Text>
+            <Text style={{
+              color: theme === 'light' ? colors.text : colors.textSecondary,
+              fontWeight: '600',
+              fontSize: 12,
+              textTransform: 'uppercase'
+            }}>
+              {theme === 'light' ? 'Dark' : 'Light'}
+            </Text>
+          </TouchableOpacity>
+        </View>
         <Text style={indexStyles.headerSubtitle}>Discover {pokemons.length}+ Pokemons</Text>
       </View>
 

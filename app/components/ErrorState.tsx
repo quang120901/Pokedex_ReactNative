@@ -1,8 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useTheme } from '../../utils/ThemeContext';
 import theme from '../styles/theme';
 
-const { BORDER_RADIUS, COLORS, SPACING, TYPOGRAPHY } = theme;
+const { BORDER_RADIUS, SPACING, TYPOGRAPHY } = theme;
 
 interface Props {
     message: string;
@@ -10,13 +11,18 @@ interface Props {
 }
 
 const ErrorState: React.FC<Props> = ({ message, onRetry }) => {
+    const { colors } = useTheme();
+
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>⚠️ Error</Text>
-            <Text style={styles.message}>{message}</Text>
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
+            <Text style={[styles.title, { color: colors.error }]}>⚠️ Error</Text>
+            <Text style={[styles.message, { color: colors.text }]}>{message}</Text>
             {onRetry && (
-                <TouchableOpacity style={styles.button} onPress={onRetry}>
-                    <Text style={styles.buttonText}>Try Again</Text>
+                <TouchableOpacity
+                    style={[styles.button, { backgroundColor: colors.primary }]}
+                    onPress={onRetry}
+                >
+                    <Text style={[styles.buttonText, { color: colors.background }]}>Try Again</Text>
                 </TouchableOpacity>
             )}
         </View>
@@ -34,15 +40,12 @@ const styles = StyleSheet.create({
     title: {
         fontSize: TYPOGRAPHY.title.fontSize,
         fontWeight: TYPOGRAPHY.title.fontWeight,
-        color: COLORS.error,
     },
     message: {
         fontSize: TYPOGRAPHY.body.fontSize,
         textAlign: 'center',
-        color: COLORS.text,
     },
     button: {
-        backgroundColor: COLORS.primary,
         paddingHorizontal: SPACING.lg,
         paddingVertical: SPACING.md,
         borderRadius: BORDER_RADIUS.md,
@@ -50,7 +53,6 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: TYPOGRAPHY.subtitle.fontSize,
         fontWeight: TYPOGRAPHY.subtitle.fontWeight,
-        color: COLORS.background,
     },
 });
 

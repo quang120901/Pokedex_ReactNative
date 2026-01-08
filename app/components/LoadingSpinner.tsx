@@ -1,18 +1,21 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { useTheme } from '../../utils/ThemeContext';
 import theme from '../styles/theme';
 
-const { COLORS, SPACING, TYPOGRAPHY } = theme;
+const { SPACING, TYPOGRAPHY } = theme;
 
 interface Props {
     message?: string;
 }
 
 const LoadingSpinner: React.FC<Props> = ({ message = 'Loading...' }) => {
+    const { colors } = useTheme();
+
     return (
-        <View style={styles.container}>
-            <ActivityIndicator size="large" color={COLORS.primary} />
-            <Text style={styles.text}>{message}</Text>
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
+            <ActivityIndicator size="large" color={colors.primary} />
+            <Text style={[styles.text, { color: colors.textSecondary }]}>{message}</Text>
         </View>
     );
 };
@@ -26,7 +29,6 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: TYPOGRAPHY.body.fontSize,
-        color: COLORS.textSecondary,
     },
 });
 

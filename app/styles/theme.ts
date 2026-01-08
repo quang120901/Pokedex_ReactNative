@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
-export const COLORS = {
+// Light Theme Colors
+export const LIGHT_COLORS = {
   // Pokemon type colors
   normal: '#A8A77A',
   fire: '#EE8130',
@@ -37,6 +38,47 @@ export const COLORS = {
   shadowStrong: 'rgba(0, 0, 0, 0.2)',
 };
 
+// Dark Theme Colors
+export const DARK_COLORS = {
+  // Pokemon type colors (same as light for consistency)
+  normal: '#A8A77A',
+  fire: '#EE8130',
+  water: '#6390F0',
+  electric: '#F7D02C',
+  grass: '#7AC74C',
+  ice: '#96D9D6',
+  fighting: '#C22E28',
+  poison: '#A33EA1',
+  ground: '#E2BF65',
+  flying: '#A98FF3',
+  psychic: '#F95587',
+  bug: '#A6B91A',
+  rock: '#B6A136',
+  ghost: '#735797',
+  dragon: '#6F35FC',
+  dark: '#705746',
+  steel: '#B7B7CE',
+  fairy: '#D685AD',
+
+  // UI Colors
+  primary: '#DC3545',
+  background: '#121212',
+  surface: '#1E1E1E',
+  text: '#E0E0E0',
+  textSecondary: '#A0A0A0',
+  border: '#333333',
+  error: '#DC3545',
+  success: '#28A745',
+  warning: '#FFC107',
+
+  // Shadows
+  shadow: 'rgba(0, 0, 0, 0.5)',
+  shadowStrong: 'rgba(0, 0, 0, 0.7)',
+};
+
+// Default to light theme colors
+export const COLORS = LIGHT_COLORS;
+
 export const SPACING = {
   xs: 4,
   sm: 8,
@@ -72,7 +114,6 @@ export const TYPOGRAPHY = {
   },
   caption: {
     fontSize: 14,
-    color: COLORS.textSecondary,
   },
   small: {
     fontSize: 12,
@@ -81,21 +122,18 @@ export const TYPOGRAPHY = {
 
 export const SHADOWS = {
   small: {
-    shadowColor: COLORS.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,
   },
   medium: {
-    shadowColor: COLORS.shadow,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 8,
     elevation: 4,
   },
   large: {
-    shadowColor: COLORS.shadowStrong,
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.2,
     shadowRadius: 12,
@@ -114,25 +152,19 @@ export const ANIMATIONS = {
 export const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
   },
   scrollContainer: {
     padding: SPACING.md,
     gap: SPACING.md,
   },
   card: {
-    backgroundColor: COLORS.surface,
     borderRadius: BORDER_RADIUS.lg,
     padding: SPACING.md,
-    ...SHADOWS.medium,
   },
   header: {
-    backgroundColor: COLORS.primary,
     padding: SPACING.md,
-    ...SHADOWS.medium,
   },
   headerTitle: {
-    color: COLORS.background,
     fontSize: TYPOGRAPHY.header.fontSize,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -180,7 +212,6 @@ export const indexStyles = StyleSheet.create({
     paddingBottom: SPACING.xl,
   },
   header: {
-    backgroundColor: COLORS.primary,
     padding: SPACING.lg,
     borderRadius: SPACING.md,
     alignItems: 'center',
@@ -189,11 +220,9 @@ export const indexStyles = StyleSheet.create({
   headerTitle: {
     fontSize: TYPOGRAPHY.header.fontSize,
     fontWeight: TYPOGRAPHY.header.fontWeight,
-    color: COLORS.background,
   },
   headerSubtitle: {
     fontSize: TYPOGRAPHY.caption.fontSize,
-    color: COLORS.background,
     opacity: 0.9,
   },
   grid: {
@@ -210,7 +239,6 @@ export const indexStyles = StyleSheet.create({
   emptyText: {
     fontSize: TYPOGRAPHY.subtitle.fontSize,
     fontWeight: TYPOGRAPHY.subtitle.fontWeight,
-    color: COLORS.textSecondary,
   },
   loadingMoreContainer: {
     padding: SPACING.md,
@@ -222,7 +250,6 @@ export const indexStyles = StyleSheet.create({
   },
   endText: {
     fontSize: TYPOGRAPHY.caption.fontSize,
-    color: COLORS.textSecondary,
     fontStyle: 'italic',
   },
 });
@@ -237,7 +264,6 @@ export const detailsStyles = StyleSheet.create({
   header: {
     padding: SPACING.lg,
     borderRadius: SPACING.md,
-    ...SHADOWS.medium,
   },
   backButton: {
     marginBottom: SPACING.sm,
@@ -245,25 +271,20 @@ export const detailsStyles = StyleSheet.create({
   backButtonText: {
     fontSize: TYPOGRAPHY.subtitle.fontSize,
     fontWeight: TYPOGRAPHY.subtitle.fontWeight,
-    color: COLORS.text,
   },
   pokemonName: {
     fontSize: TYPOGRAPHY.header.fontSize,
     fontWeight: TYPOGRAPHY.header.fontWeight,
-    color: COLORS.text,
     textTransform: 'capitalize',
   },
   pokemonId: {
     fontSize: TYPOGRAPHY.subtitle.fontSize,
     fontWeight: TYPOGRAPHY.subtitle.fontWeight,
-    color: COLORS.textSecondary,
   },
   imageContainer: {
-    backgroundColor: COLORS.surface,
     borderRadius: SPACING.lg,
     padding: SPACING.lg,
     alignItems: 'center',
-    ...SHADOWS.medium,
   },
   mainImage: {
     width: '100%',
@@ -271,7 +292,6 @@ export const detailsStyles = StyleSheet.create({
   },
   imageHint: {
     fontSize: TYPOGRAPHY.caption.fontSize,
-    color: COLORS.textSecondary,
     marginTop: SPACING.sm,
   },
   typesContainer: {
@@ -288,19 +308,15 @@ export const detailsStyles = StyleSheet.create({
   typeText: {
     fontSize: TYPOGRAPHY.subtitle.fontSize,
     fontWeight: TYPOGRAPHY.subtitle.fontWeight,
-    color: COLORS.background,
     textTransform: 'capitalize',
   },
   infoCard: {
-    backgroundColor: COLORS.surface,
     borderRadius: SPACING.lg,
     padding: SPACING.lg,
-    ...SHADOWS.medium,
   },
   sectionTitle: {
     fontSize: TYPOGRAPHY.title.fontSize,
     fontWeight: TYPOGRAPHY.title.fontWeight,
-    color: COLORS.text,
     marginBottom: SPACING.md,
   },
   statsGrid: {
@@ -315,12 +331,10 @@ export const detailsStyles = StyleSheet.create({
   },
   statLabel: {
     fontSize: TYPOGRAPHY.caption.fontSize,
-    color: COLORS.textSecondary,
   },
   statValue: {
     fontSize: TYPOGRAPHY.subtitle.fontSize,
     fontWeight: TYPOGRAPHY.subtitle.fontWeight,
-    color: COLORS.text,
   },
   statsList: {
     gap: SPACING.sm,
@@ -332,14 +346,12 @@ export const detailsStyles = StyleSheet.create({
   },
   statName: {
     fontSize: TYPOGRAPHY.body.fontSize,
-    color: COLORS.text,
     textTransform: 'capitalize',
     minWidth: 100,
   },
   statBarContainer: {
     flex: 1,
     height: 8,
-    backgroundColor: COLORS.border,
     borderRadius: SPACING.xs,
     overflow: 'hidden',
   },
@@ -349,7 +361,6 @@ export const detailsStyles = StyleSheet.create({
   },
   statNumber: {
     fontSize: TYPOGRAPHY.body.fontSize,
-    color: COLORS.text,
     fontWeight: 'bold',
     minWidth: 30,
     textAlign: 'right',
@@ -360,14 +371,12 @@ export const detailsStyles = StyleSheet.create({
     gap: SPACING.sm,
   },
   abilityBadge: {
-    backgroundColor: COLORS.primary,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
     borderRadius: BORDER_RADIUS.md,
   },
   abilityText: {
     fontSize: TYPOGRAPHY.body.fontSize,
-    color: COLORS.background,
     fontWeight: 'bold',
     textTransform: 'capitalize',
   },
@@ -377,16 +386,13 @@ export const detailsStyles = StyleSheet.create({
     gap: SPACING.sm,
   },
   moveBadge: {
-    backgroundColor: COLORS.surface,
     borderWidth: 1,
-    borderColor: COLORS.border,
     paddingHorizontal: SPACING.md,
     paddingVertical: SPACING.sm,
     borderRadius: BORDER_RADIUS.md,
   },
   moveText: {
     fontSize: TYPOGRAPHY.body.fontSize,
-    color: COLORS.text,
     textTransform: 'capitalize',
   },
   spritesGrid: {
@@ -402,14 +408,11 @@ export const detailsStyles = StyleSheet.create({
   sprite: {
     width: 80,
     height: 80,
-    backgroundColor: COLORS.background,
     borderRadius: SPACING.sm,
     borderWidth: 1,
-    borderColor: COLORS.border,
   },
   spriteLabel: {
     fontSize: TYPOGRAPHY.caption.fontSize,
-    color: COLORS.textSecondary,
     textTransform: 'capitalize',
     textAlign: 'center',
   },
